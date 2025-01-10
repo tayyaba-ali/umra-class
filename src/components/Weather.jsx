@@ -8,7 +8,7 @@ const Weather = () => {
   //   const [city, setCity] = useState("");
 
   const inputRef = useRef(null);
-  const [weatherData, setWeatherData] = useState(null);
+  const [weatherData, setWeatherData] = useState([]);
 
   const getCityName = async () => {
     // not recommended
@@ -23,7 +23,7 @@ const Weather = () => {
         `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=18196adb736a0ff23b9fa214ca394629&units=metric`
       );
 
-      setWeatherData(res.data);
+      setWeatherData([res.data,...weatherData]);
     } catch (e) {
       console.log(e);
     }
@@ -49,14 +49,17 @@ const Weather = () => {
         <button onClick={getCityName}>Get Weather</button>
       </div>
 
-      {weatherData ? (
-        <div>
-          <p>cityName {weatherData?.name}</p>
-          <p>country {weatherData?.sys?.country} </p>
-          <p>temp {weatherData?.main?.temp}</p>
-          <p>feels_like {weatherData?.main?.feels_like}</p>
-          <p>humidity {weatherData?.main?.humidity}</p>
-        </div>
+      {weatherData.length ? (
+       weatherData.map((weatherData)=>(
+
+        <div className="card">
+        <p>cityName {weatherData?.name}</p>
+        <p>country {weatherData?.sys?.country} </p>
+        <p>temp {weatherData?.main?.temp}</p>
+        <p>feels_like {weatherData?.main?.feels_like}</p>
+        <p>humidity {weatherData?.main?.humidity}</p>
+      </div>
+       ))
       ) : (
         ""
       )}
